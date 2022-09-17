@@ -1,31 +1,63 @@
 <template>
   <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
+    <h1>☢ React timer ☢</h1>
+    <button :disabled="isPlaying" @click="gameOn">
+      ⛏
+      {{ isPlaying ? 'Waiting...' : 'Play' }}🔪
+    </button>
   </div>
-  <HelloWorld msg="Vite + Vue" />
+
+  <ShowResult v-if="isSubmitted" :time="result" />
+
+  <BlockGame
+    v-if="isPlaying"
+    :delay="delay"
+    :disabled="isSubmitted"
+    @submit="submitGame"
+  />
 </template>
 
-<script setup lang="ts">
-  // This starter template is using Vue 3 <script setup> SFCs
-  // Check out https://vuejs.org/api/sfc-script-setup.html#script-setup
-  import HelloWorld from './components/HelloWorld.vue'
+<script lang="ts">
+  import BlockGame from './components/BlockGame.vue'
+  import ShowResult from './components/ShowResult.vue'
+  import { defineComponent } from 'vue'
+
+  export default defineComponent({
+    components: { BlockGame, ShowResult },
+    data() {
+      return {
+        delay: 0,
+        isPlaying: false,
+        isSubmitted: false,
+        result: 0,
+      }
+    },
+
+    methods: {
+      gameOn() {
+        this.isPlaying = true
+        this.isSubmitted = false
+        this.delay = 1000 + Math.random() * 2000
+      },
+      submitGame(result: number) {
+        this.isSubmitted = true
+        this.isPlaying = false
+        this.result = result
+      },
+    },
+  })
 </script>
 
 <style scoped>
-  .logo {
-    height: 6em;
-    padding: 1.5em;
-    will-change: filter;
+  button {
+    padding: 15px 50px;
+    margin: 10px;
+    background-color: #00dcff;
+    font-weight: bolds;
+    border: none;
+    outline: none;
   }
-  .logo:hover {
-    filter: drop-shadow(0 0 2em #646cffaa);
-  }
-  .logo.vue:hover {
-    filter: drop-shadow(0 0 2em #42b883aa);
+  button:hover {
+    background-color: #00fcfb;
   }
 </style>

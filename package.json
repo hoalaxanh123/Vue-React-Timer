@@ -37,6 +37,6 @@
     }
   },
   "lint-staged": {
-    "*.{ts,vue}": "eslint --fix"
+    "*.{ts,vue}": "eslint --ext .ts,vue --ignore-path .gitignore ."
   }
 }
